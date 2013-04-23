@@ -1,0 +1,160 @@
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" 参考サイト
+"" http://memo.officebrook.net/20080822.html
+"" http://vimperator.g.hatena.ne.jp/snaka72/20081231/1230746624
+"" http://bulkya.blogdb.jp/share/browser/dotfiles/vimperator/snaka-vimperatorrc
+"" http://d.hatena.ne.jp/k0y/20070919/1190257028
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" 環境設定
+
+"" 念のため change directory
+cd ~
+
+"" ランタイムパスの設定
+"" vimperator の plugin とかを格納している場所
+set runtimepath=~/vimperator
+
+"" タイトルをデフォルトに戻す
+set titlestring=Firefox
+
+"" verbose mode
+set verbose=9
+
+"" Beep を消す
+"set visualbell=off
+set visualbell=false
+"" tab を押さなくても補完
+"set wildoptions=auto
+
+"" 検索は大文字小文字を無視する
+set ignorecase
+"" メニューバー/ツールバーを表示
+"set guioptions=mT
+"set guioptions=
+""" Vimperator 3.1 では guioptions が使えない
+set gui=none
+set gui=addons,tabs
+
+"" google で検索したときとかに，input 要素に focus を奪われないようにする
+"set focuscontent
+"" 補完リストはサーチエンジンとロケーションバーの履歴
+set complete=sl
+
+"" ]] や [[ で探す候補に日本語追加
+set nextpattern=^次(へ|の|ペ),^続き,\bnext\b,^>$,^(>>|&#187;)$,^(>|&#187;),(>|&#187;)$,\bmore\b
+set previouspattern=^前(へ|の|ペ),^戻る,\bprev|previous\b,^<$,^(<<|&#171;)$,^(<|&#171;),(<|&#171;)$
+"" Newer/Older という形に対応
+"" 具体的には Twitter Search
+set nextpattern+=^older
+set previouspattern+=^newer
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" キーマップ
+
+" normal mode
+"" \C-q 直後の入力は Vimperator 用コマンドとして解釈しない
+" """ ここで noremap ではなく map を使うと，<C-v> で無限ループに陥る危険がある
+" noremap <C-q> <C-v>
+"" 全選択は \C-a でできるようにする
+map <C-a> <C-q><C-a>
+"" 切り取りは \C-x でできるようにする
+map <C-x> <C-q><C-x>
+"" コピーは \C-c でできるようにする
+"map <C-c> <C-q><C-c>
+map <C-c> Y
+
+"" 上下移動を大きく (3 行ずつ移動)
+noremap j 3j
+noremap k 3k
+
+"" 横移動の機会なんてほとんどない気がするので，h/l にタブの移動を割り当て
+noremap h gT
+noremap l gt
+"" 横移動を \S-h/l に変更 (少しだけ大きめに)
+noremap <S-h> 3h
+noremap <S-l> 3l
+
+
+
+noremap h 3h
+noremap l 3l
+noremap <S-h> gT
+noremap <S-l> gt
+
+noremap <C-h> gT
+noremap <C-l> gt
+
+
+
+"" .vimperatorrc の再読み込みを ,R というコマンドでできるようにする
+"map <silent> ,R :mapc<CR>:cmapc<CR>:imapc<CR>:so ~/.vimperatorrc<CR>
+let mapleader = ","
+noremap <Leader>R :mapc<CR>:cmapc<CR>:imapc<CR>:so ~/.vimperatorrc<CR>
+
+"" ! というコマンドで CSS の有効無効を切り替え
+noremap ! :set invusermode<CR>
+
+"" #hash のような感じで Twitter のハッシュタグを検索
+" "" 検索バーに Twitter Search がインストールされていて，
+"" なおかつそのキーワードが twitter になっている必要あり
+"noremap # :tabopen twitter<Space>#
+"" 検索バーに Twitter Search がインストールされていない環境のために直打ち (全角ハッシュタグを入力したときにおかしくなる？)
+noremap # :tabopen http://search.twitter.com/search?q=%23
+
+" ALC英単語検索
+noremap alc :tabopen http://eow.alc.co.jp/
+
+" insert mode
+"" \C-q 直後の入力は Vimperator 用コマンドとして解釈しない
+" """ ここで noremap ではなく map を使うと，<C-v> で無限ループに陥る危険がある
+" inoremap <C-q> <C-v>
+"" 全選択は \C-a でできるようにする
+imap <C-a> <C-q><C-a>
+"" 切り取りは \C-x でできるようにする
+imap <C-x> <C-q><C-x>
+"" 貼り付けは \C-v でできるようにする
+imap <C-v> <C-q><C-v>
+"" やり直しは \C-z でできるようにする
+imap <C-z> <C-q><C-z>
+"" \C-f でカーソルを進める
+inoremap <C-f> <RIGHT>
+"" \C-b でカーソルを戻す
+inoremap <C-b> <LEFT>
+"" \C-e でカーソルを行末に
+inoremap <C-e> <END>
+"" \C-p でカーソルを上に
+inoremap <C-p> <UP>
+"" \C-n でカーソルを下に
+inoremap <C-n> <DOWN>
+"" normal mode に戻るのに \C-c を使う
+inoremap <C-c> <ESC>
+"" \C-o でファイルを開くことなんてないので，normal mode と同じに
+inoremap <C-o> <ESC><C-o>
+
+" ex mode
+"" 補完リストの選択を C-n, C-p で行う
+cnoremap <C-n> <TAB>
+cnoremap <C-p> <S-TAB>
+"" \C-f でカーソルを進める
+cnoremap <C-f> <RIGHT>
+"" \C-b でカーソルを戻す
+cnoremap <C-b> <LEFT>
+"" \C-q 直後の入力は Vimperator 用コマンドとして解釈しない
+" """ ここで noremap ではなく map を使うと，<C-v> で無限ループに陥る危険がある
+" cnoremap <C-q> <C-v>
+"" 全選択は \C-a でできるようにする
+"cmap <C-a> <C-q><C-a>
+"" 切り取りは \C-x でできるようにする
+cmap <C-x> <C-q><C-x>
+"" 貼り付けは \C-v でできるようにする
+cmap <C-v> <C-q><C-v>
+"" やり直しは \C-z でできるようにする
+cmap <C-z> <C-q><C-z>
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" スタイル
+
+"" コマンドラインに入ったときに IME を非アクティブに (全角入力を半角入力に切り替え)
+"" http://vimperator.g.hatena.ne.jp/teramako/20090311/1236776437
+"style -name commandline-ime chrome://* #liberator-commandline-command input {ime-mode: inactive;}

@@ -1,0 +1,10 @@
+#load "unix.cma";;
+#load "graphics.cma";;
+#load "str.cma"
+#load "bigarray.cma";; (* for camomile *)
+#load "camomile.cma";;
+#load "pcre.cma";; (* for netstring *)
+#load "netsys.cma";; (* for netstring *)
+#load "netstring.cma";; (* for pxp *)
+#load "pxp_engine.cma";;
+#load "xml-light.cma";;

@@ -1,0 +1,11 @@
+[user]
+	name = Your Name
+	email = xxx@example.com
+[color]
+  ui = auto
+[alias]
+  co = checkout
+  st = status
+[github]
+	user = username
+	token = ................................

@@ -1,0 +1,56 @@
+##; escape key
+escape t
+
+##; disable startup message
+startup_message off
+
+##; use utf-8
+defutf8 on
+defencoding utf-8
+#encoding utf-8 utf-8
+
+##; display control characters
+defc1 off
+
+##; display pstatus line
+hardstatus on
+### macros
+### %w window list
+### %-w list former windows of current window
+### %+w list latter windows of current window
+### %n current window number
+### %t current window name
+### %{=b bw} text font ('bold blue white' in this example)
+### %{-} clear color
+### %= white spaces (right align string after this macro)
+### %m month
+### %d day
+### %02c hour in 24-format
+#hardstatus alwayslastline "[%02c] %`%-w%{=b bw}%n %t%{-}%+w"
+#hardstatus alwayslastline "screen | %w | %u %= %m/%d %02c"
+#hardstatus alwayslastline "screen | %{=b wb}%w%{-} | %u %= %m/%d %02c"
+#hardstatus alwayslastline "screen | %-w%{= wb}%n* %t%{-}%+w | %u %= %m/%d %02c"
+
+##; caption for last line
+#caption always "%{b RK} %y/%m/%d %c:%s %{bu dr} | %-w%{=bu CK}%n %t%{-}%+w"
+#caption always "%?%F%{= wk}%:%{= ww}%?%-w%{=u Wk}%n %t%{-}%+w"
+caption always "screen | %-w%{= wb}%n* %t%{-}%+w | %u %= %m/%d %02c"
+
+##; auto detach when unexpected disconnection
+autodetach on
+
+##; screen shell
+#shell -/bin/bash
+shell -/bin/zsh
+shelltitle "$ |$SHELL"
+#shelltitle '$ |bash'
+
+##; scroll buffer
+defscrollback 8192
+
+##; disable flow control by default
+defflow off
+
+##; set TERM environment
+#term vt100
+#term xterm
