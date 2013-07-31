@@ -152,3 +152,64 @@ if $LANG =~ "ja.*"
 endif
 
 " vim:tw=78:sw=2:norl:
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"" runtimepath
+set runtimepath+=$HOME/.vim
+"" "" pathogen
+"" " .vim/bundle/plugin_nameを読み込むようにする
+"" call pathogen#runtime_append_all_bundles()
+"" " .vim/bunle/plugin_nameのヘルプを読み込めるようにする
+"" call pathogen#helptags()
+
+"" NeoBundle
+if has('vim_starting')
+  set runtimepath+=~/.vim/bundle/neobundle.vim
+endif
+
+call neobundle#rc(expand('~/.vim/bundle/'))
+
+filetype plugin on
+filetype indent on
+syntax on
+
+" originalrepos on github
+NeoBundle 'Shougo/neobundle.vim'
+NeoBundle 'Shougo/vimproc'
+NeoBundle 'Shougo/vimshell'
+NeoBundle 'Shougo/unite.vim'
+NeoBundle 'Shougo/neocomplcache'
+NeoBundle 'Shougo/neosnippet'
+NeoBundle 'jpalardy/vim-slime'
+NeoBundle 'scrooloose/syntastic'
+NeoBundle 'mattn/zencoding-vim'
+NeoBundle 'othree/html5.vim'
+NeoBundle 'hail2u/vim-css3-syntax'
+NeoBundle 'cakebaker/scss-syntax.vim'
+NeoBundle 'surround.vim'
+""NeoBundle 'https://bitbucket.org/kovisoft/slimv'
+""NeoBundle 'suan/vim-instant-markdown'
+NeoBundle 'thinca/vim-quickrun'
+NeoBundle 'tyru/open-browser.vim'
+NeoBundle 'mattn/calendar-vim'
+
+NeoBundle 'kannokanno/previm'
+
+NeoBundleCheck
+
+let g:user_zen_settings = {
+      \ 'lang' : 'ja',
+      \ }
+let g:quickrun_config = {}
+let g:quickrun_config['markdown'] = {
+      \ 'type': 'markdown/pandoc',
+      \ 'outputter': 'browser',
+      \ 'cmdopt': '-s'
+      \ }
+
+let g:previm_open_cmd = 'chrome'
+
+au BufRead,BufNewFile *.scss set filetype=scss
+autocmd BufRead,BufNewFile *.mkd set filetype=markdown
+autocmd BufRead,BufNewFile *.md set filetype=markdown
+

@@ -16,7 +16,7 @@ COLOR_WHITE='\e[1;37m'
 ### http://d.hatena.ne.jp/notogawa/20120720/1342756620
 function length()
 {
-  echo -n ${#1}
+    echo -n ${#1}
 }
 function init-prompt-git-branch()
 {
@@ -30,7 +30,8 @@ else
     export PS1_GIT_BRANCH=
 fi
 #export PS1="\[\e[32;1m\]\u@\H \[\e[33;1m\]\w $PS1_GIT_BRANCH\n\[\e[36;1m\]\t \[\e[0m\]\$ "
-export PS1="\[\e[32;1m\]\u@\H \[\e[33;1m\]\w $PS1_GIT_BRANCH\n\[\e[35;1m\]\t\[\e[0m\] (\[\e[36;1m\]j\j\[\e[0m\]) \[\e[0m\]\$ "
+#export PS1="\[\e[32;1m\]\u@\H \[\e[33;1m\]\w $PS1_GIT_BRANCH\n\[\e[35;1m\]\t\[\e[0m\] (\[\e[36;1m\]j\j\[\e[0m\]) \[\e[0m\]\$ "
+export PS1="\[\e[32;1m\]\u@\H \[\e[33;1m\]\w $PS1_GIT_BRANCH\n\$ "
 
 ## for screen status title (display executing command name)
 SCREEN_PROMPT_EXEC_COMMAND='\ek\e\134'
@@ -46,17 +47,11 @@ export TZ=JST-9
 export JLESSCHARSET=utf-8
 
 ## PATH
-export MY=${HOME}/my
-
 export PATH=/opt/local/bin:/opt/local/sbin:$PATH
-export PATH=${HOME}/local/godi/bin:${HOME}/local/godi/sbin:$PATH
-export PATH=${HOME}/local/perl5/bin:$PATH
 export PATH=${HOME}/local/bin:${HOME}/local/sbin:$PATH
-export PATH=${MY}/bin:$PATH
 
 export LIBRARY_PATH=/opt/local/lib:$LIBRARY_PATH
 export LIBRARY_PATH=${HOME}/local/lib:$LIBRARY_PATH
-export LIBRARY_PATH=${MY}/lib:$LIBRARY_PATH
 
 export LD_LIBRARY_PATH=$LIBRARY_PATH:$LD_LIBRARY_PATH
 
@@ -72,13 +67,11 @@ export CPLUS_LIBRARY_PATH=$LIBRARY_PATH:$CPLUS_LIBRARY_PATH
 
 export C_INCLUDE_PATH=/opt/local/include:$C_INCLUDE_PATH
 export C_INCLUDE_PATH=${HOME}/local/include:$C_INCLUDE_PATH
-export C_INCLUDE_PATH=${MY}/include:$C_INCLUDE_PATH
 
 export CPLUS_INCLUDE_PATH=$C_INCLUDE_PATH:$CPLUS_INCLUDE_PATH
 
 # for Python
 export PYTHONPATH=${HOME}/local/lib/python
-export PYTHONPATH=${MY}/lib/python:$PYTHONPATH
 
 # for Java
 # export JAVA_HOME=/usr/local/java
@@ -90,26 +83,19 @@ export PYTHONPATH=${MY}/lib/python:$PYTHONPATH
 export _JAVA_OPTIONS="-Dfile.encoding=UTF-8"
 export CLASSPATH=$HOME/local/lib/java/jar/langdetect.jar:$CLASSPATH
 
-# for CPAN
-export PKG_DBDIR=${HOME}/local/var/db/pkg
-export PORT_DBDIR=${HOME}/local/var/db/pkg
-export INSTALL_AS_USER=$(whoami)
-export PERL5LIB=${HOME}/local/perl5/lib/perl5:$PERL5LIB
+# # for CPAN
+# export PKG_DBDIR=${HOME}/local/var/db/pkg
+# export PORT_DBDIR=${HOME}/local/var/db/pkg
+# export INSTALL_AS_USER=$(whoami)
+# export PERL5LIB=${HOME}/local/perl5/lib/perl5:$PERL5LIB
 
-## for local::lib
-##   HOW TO INSTALL
-##     get local::lib src package from CPAN
-##     $ perl Makefile.PL --bootstrap=$HOME/local
-##     $ make && make test && make install
-##     $ source $HOME/.bashrc ## eval the following line
-eval $(perl -I$HOME/local/perl5/lib/perl5 -Mlocal::lib=$HOME/local/perl5)
-
-export PERL5LIB=${MY}/lib/perl5:$PERL5LIB
-
-export LILFES_PATH=${MY}/lib/lilfes:$LILFES_PATH
-
-# for OpenCCG
-# export OPENCCG_HOME=${HOME}/local/openccg
+# ## for local::lib
+# ##   HOW TO INSTALL
+# ##     get local::lib src package from CPAN
+# ##     $ perl Makefile.PL --bootstrap=$HOME/local
+# ##     $ make && make test && make install
+# ##     $ source $HOME/.bashrc ## eval the following line
+# eval $(perl -I$HOME/local/perl5/lib/perl5 -Mlocal::lib=$HOME/local/perl5)
 
 # Don't put duplicate lines in the history
 export HISTCONTROL="ignoredups"
@@ -176,9 +162,6 @@ alias patch='patch -b'
 alias less='less -X'
 alias grep='grep --color=auto'
 
-#OCAML_INCLUDE="-I `ocamlfind query camomile` -I `ocamlfind query pcre` -I `ocamlfind query netsys` -I `ocamlfind query netstring` -I `ocamlfind query pxp`-engine -I `ocamlfind query xml-light`"
-alias ocaml="rlwrap ocaml $OCAML_INCLUDE"
-alias ocamlduce="rlwrap ocaml $OCAML_INCLUDE"
 alias guile='rlwrap guile'
 
 # alias python='/opt/local/bin/python2.7'
@@ -199,6 +182,8 @@ esac
 
 alias e='emacsclient'
 alias em='emacs'
+alias v='vim'
+alias vi='vim'
 #export ALTERNATE_EDITOR='vi'
 
 alias cpan-uninstall='perl -MConfig -MExtUtils::Install -e '"'"'($FULLEXT=shift)=~s{-}{/}g;uninstall "$Config{sitearchexp}/auto/$FULLEXT/.packlist",1'"'"
@@ -214,7 +199,8 @@ umask 022
 ulimit -c 0
 
 # disable terminal lock by \C-s
-#stty stop undef
+stty stop undef
+stty start undef
 
 alias ssh='env TERM=xterm-256color ssh'
 #alias emacs='env TERM=xterm-256color emacs'

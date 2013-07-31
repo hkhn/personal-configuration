@@ -40,8 +40,8 @@ caption always "screen | %-w%{= wb}%n* %t%{-}%+w | %u %= %m/%d %02c"
 autodetach on
 
 ##; screen shell
-#shell -/bin/bash
-shell -/bin/zsh
+shell -/bin/bash
+#shell -/bin/zsh
 shelltitle "$ |$SHELL"
 #shelltitle '$ |bash'
 
