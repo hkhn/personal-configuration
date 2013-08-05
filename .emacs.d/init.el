@@ -345,15 +345,250 @@
 ;;   (require 'yasnippet) ;; not yasnippet-bundle
 ;;   (yas/initialize)
 ;;   (yas/load-directory "~/.emacs.d/site-lisp/yasnippet-0.6.1c/snippets"))
+
+;* window system
+;; true type font
+(cond (is-windows
+       (setq w32-use-w32-font-dialog nil)
+       (setq scalable-fonts-allowed t)
+       (setq w32-enable-synthesized-fonts t)))
+
+(cond ((and is-windows is-meadow)
+       ;; Meadow
+
+       ;; add fonts
+       ;;;;;;;;;;;;;
+       ;; How to find fonts?
+       ;; open *scratch* buffer
+       ;; type (w32-query-get-logfont)
+       ;; type C-j on the end of the line
+       ;;;;;;;;;;;;;
+
+       ;; メイリオ-Consolas
+       (w32-add-font
+        "Meiryo-Consolas"
+        '((spec
+           ((:char-spec ascii :height any)
+            strict
+            (w32-logfont "Consolas" 0 -17 400 0 nil nil nil 0 1 3 0))
+           ((:char-spec ascii :height any :weight bold)
+            strict
+            (w32-logfont "Consolas" 0 -17 700 0 nil nil nil 0 1 3 0))
+           ((:char-spec ascii :height any :slant italic)
+            strict
+            (w32-logfont "Consolas" 0 -17 400 0 t nil nil 0 1 3 0))
+           ((:char-spec ascii :height any :weight bold :slant italic)
+            strict
+            (w32-logfont "Consolas" 0 -17 700 0 t nil nil 0 1 3 0))
+           ((:char-spec japanese-jisx0208 :height any)
+            strict
+            (w32-logfont "Meiryo" 0 -15 400 0 nil nil nil 128 1 3 49)
+            ((spacing . 1)))
+           ((:char-spec japanese-jisx0208 :height any :slant italic)
+            strict
+            (w32-logfont "Meiryo" 0 -15 400 0 t nil nil 128 1 3 49)
+            ((spacing . 1)))
+           ((:char-spec japanese-jisx0208 :height any :weight bold)
+            strict
+            (w32-logfont "Meiryo" 0 -15 700 0 nil nil nil 128 1 3 49)
+            ((spacing . 1)))
+           ((:char-spec japanese-jisx0208 :height any :weight bold :slant italic)
+            strict
+            (w32-logfont "Meiryo" 0 -15 700 0 t nil nil 128 1 3 49)
+            ((spacing . 1)))
+           ((:char-spec katakana-jisx0201 :height any)
+            strict
+            (w32-logfont "Meiryo" 0 -15 400 0 nil nil nil 128 1 3 49)
+            ((spacing . 1)))
+           ((:char-spec katakana-jisx0201 :height any :slant italic)
+            strict
+            (w32-logfont "Meiryo" 0 -15 400 0 t nil nil 128 1 3 49)
+            ((spacing . 1)))
+           ((:char-spec katakana-jisx0201 :height any :weight bold)
+            strict
+            (w32-logfont "Meiryo" 0 -15 700 0 nil nil nil 128 1 3 49)
+            ((spacing . 1)))
+           ((:char-spec katakana-jisx0201 :height any :weight bold :slant italic)
+            strict
+            (w32-logfont "Meiryo" 0 -15 700 0 t nil nil 128 1 3 49)
+            ((spacing . 1)))
+           )))
+       (set-face-attribute 'variable-pitch nil :font "Meiryo-Consolas")
+
+       ;; MSゴシック-Consolas
+       (w32-add-font
+        "MSGothic-Consolas"
+        '((spec
+           ((:char-spec ascii :height any)
+            strict
+            (w32-logfont "Consolas" 0 -17 400 0 nil nil nil 0 1 3 0))
+           ((:char-spec ascii :height any :weight bold)
+            strict
+            (w32-logfont "Consolas" 0 -17 700 0 nil nil nil 0 1 3 0))
+           ((:char-spec ascii :height any :slant italic)
+            strict
+            (w32-logfont "Consolas" 0 -17 400 0 t nil nil 0 1 3 0))
+           ((:char-spec ascii :height any :weight bold :slant italic)
+            strict
+            (w32-logfont "Consolas" 0 -17 700 0 t nil nil 0 1 3 0))
+           ((:char-spec japanese-jisx0208 :height any)
+            strict
+            (w32-logfont "MS ゴシック" 0 -15 400 0 nil nil nil 128 1 3 49)
+            ((spacing . 1)))
+           ((:char-spec japanese-jisx0208 :height any :slant italic)
+            strict
+            (w32-logfont "MS ゴシック" 0 -15 400 0 t nil nil 128 1 3 49)
+            ((spacing . 1)))
+           ((:char-spec japanese-jisx0208 :height any :weight bold)
+            strict
+            (w32-logfont "MS ゴシック" 0 -15 700 0 nil nil nil 128 1 3 49)
+            ((spacing . 1)))
+           ((:char-spec japanese-jisx0208 :height any :weight bold :slant italic)
+            strict
+            (w32-logfont "MS ゴシック" 0 -15 700 0 t nil nil 128 1 3 49)
+            ((spacing . 1))))))
+       (set-face-attribute 'variable-pitch nil :font "MSGothic-Consolas")
+
+       ;; default frame
+       (setq default-frame-alist
+             (append '(
+                       (foreground-color . "white")
+                       (background-color . "black")
+                       (width . 80)
+                       (height . 34)
+                       (font . "Meiryo-Consolas")
+                       (alpha . 80)
+                       )
+                     default-frame-alist)))
+
+      ((and is-windows (not is-meadow))
+       ;; GNU Emacs
+
+       ;; create fontset
+       ;;; these fontsets can be attested by M-x list-fontset RET
+
+       ;; roman font (fontset-13)
+       ;; medium-r-normal
+       (create-fontset-from-fontset-spec
+        "-*-fixed-medium-r-normal--13-*-*-*-*-*-fontset-13,
+        ascii:-*-Consolas-medium-r-normal--15-*-iso8859-1,
+        japanese-jisx0208:-misc-メイリオ-medium-r-normal--13-*-jisx0208*,
+        katakana-jisx0201:-misc-メイリオ-medium-r-normal--13-*-jisx0201*")
+       ;; roman font (fontset-15)
+       ;; medium-r-normal
+       (create-fontset-from-fontset-spec
+        "-*-fixed-medium-r-normal--15-*-*-*-*-*-fontset-15,
+        ascii:-*-Consolas-medium-r-normal--17-*-iso8859-1,
+        japanese-jisx0208:-*-メイリオ-medium-r-normal--15-*-jisx0208*,
+        katakana-jisx0201:-*-メイリオ-medium-r-normal--15-*-jisx0201*")
+
+       ;; default frame
+       (setq default-frame-alist
+             (append '(
+                       (foreground-color . "white")
+                       (background-color . "black")
+                       (mouse-color . "white")
+                       (cursor-color . "white")
+                       (width . 80)
+
+                       (height . 30)
+                       (font . "fontset-15")
+
+                       (line-spacing . 0)
+                       (alpha . 80)
+                       )
+                     default-frame-alist))
+
+       ;; Ignore IME in GNU Emacs
+       (global-set-key [M-kanji] 'ignore))
+
+      ((and window-system is-mac)
+       ;; Mac
+       ;; http://d.hatena.ne.jp/kazu-yamamoto/20090122/1232589385
+       ;; http://sakito.jp/emacs/emacs23.html
+       (setq fixed-width-use-QuickDraw-for-ascii t)
+       (setq mac-allow-anti-aliasing t)
+       (if (= emacs-major-version 22)
+           (require 'carbon-font))
+       ;;(setq my-font "-*-*-medium-r-normal--14-*-*-*-*-*-fontset-hiramaru")
+       ;;(set-default-font my-font)
+       ;;(add-to-list 'default-frame-alist `(font . ,my-font))
+       (when (or (= emacs-major-version 23) (= emacs-major-version 24))
+         (set-face-attribute 'default nil
+                             :family "monaco"
+                             :height 140)
+         (set-fontset-font
+          (frame-parameter nil 'font)
+          'japanese-jisx0208
+          ;;'("Hiragino Kaku Gothic Pro" . "iso10646-1")
+          ;;'("Osaka" . "iso10646-1")
+          (font-spec :family "Osaka" :size 12)
+          )
+         (set-fontset-font
+          (frame-parameter nil 'font)
+          'japanese-jisx0212
+          ;;'("Hiragino Kaku Gothic Pro" . "iso10646-1")
+          ;;'("Osaka" . "iso10646-1")
+          (font-spec :family "Osaka" :size 12)
+          )
+         (set-fontset-font
+          (frame-parameter nil 'font)
+          'mule-unicode-0100-24ff
+          '("monaco" . "iso10646-1"))
+
+         (setq face-font-rescale-alist
+               '(("^-apple-hiragino.*" . 1.2)
+                 (".*osaka-bold.*" . 1.2)
+                 (".*osaka-medium.*" . 1.2)
+                 (".*courier-bold-.*-mac-roman" . 1.0)
+                 (".*monaco cy-bold-.*-mac-cyrillic" . 0.9)
+                 (".*monaco-bold-.*-mac-roman" . 0.9)
+                 ("-cdac$" . 1.3))))
+
+       (setq default-frame-alist
+             (append '(
+                       (foreground-color . "white")
+                       (background-color . "black")
+                       (width . 80)
+                       (height . 40)
+                       (line-spacing . 0)
+                       (alpha . 80)
+                       )
+                     default-frame-alist)))
+
+      ((and window-system is-unix)
+       ;; Unix
+       (setq default-frame-alist
+             (append '(
+                       (foreground-color . "white")
+                       (background-color . "black")
+                       (width . 80)
+                       (height . 40)
+                       (line-spacing . 0)
+                       (alpha . 80)
+                       )
+                     default-frame-alist))))
+
+;; use default frame
+(setq initial-frame-alist default-frame-alist)
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(add-to-list 'auto-mode-alist '("\\.\\(js\\|js.erb\\)\\'" . js2-mode))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (custom-set-variables
-  ;; custom-set-variables was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(css-indent-offset 2)
+ '(js2-basic-offset 2)
+ '(scss-compile-at-save nil)
  '(standard-indent 2))
 (custom-set-faces
-  ;; custom-set-faces was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  )
