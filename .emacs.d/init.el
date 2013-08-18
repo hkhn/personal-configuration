@@ -340,12 +340,6 @@
   ; (wb-line-number-toggle)
   (setq wb-line-number-scroll-bar t))
 
-;; ;* yasnippet
-;; (when (locate-library "yasnippet")
-;;   (require 'yasnippet) ;; not yasnippet-bundle
-;;   (yas/initialize)
-;;   (yas/load-directory "~/.emacs.d/site-lisp/yasnippet-0.6.1c/snippets"))
-
 ;* window system
 ;; true type font
 (cond (is-windows
@@ -572,9 +566,85 @@
 ;; use default frame
 (setq initial-frame-alist default-frame-alist)
 
+;; yasnippet
+;* http://fukuyama.co/yasnippet
+(require 'cl)
+(when (locate-library "yasnippet")
+  (require 'yasnippet)
+  (setq yas-snippet-dirs
+        '("~/.emacs.d/snippets"
+          ))
+  (yas-global-mode 1)
+  (custom-set-variables '(yas-trigger-key "TAB"))
+  ;; (define-key yas-minor-mode-map (kbd "C-x i i") 'yas-insert-snippet)
+  ;; (define-key yas-minor-mode-map (kbd "C-x i n") 'yas-new-snippet)
+  ;; (define-key yas-minor-mode-map (kbd "C-x i v") 'yas-visit-snippet-file)
+  (define-key yas-minor-mode-map (kbd "C-c C-i") 'yas-insert-snippet)
+  (define-key yas-minor-mode-map (kbd "C-c C-n") 'yas-new-snippet)
+  (define-key yas-minor-mode-map (kbd "C-c C-v") 'yas-visit-snippet-file)
+  )
+;* auto-complete
+(when (locate-library "auto-complete")
+  (require 'auto-complete)
+  (global-auto-complete-mode t)
+  (defvar my-ac-sources
+    '(
+      ;;ac-source-yasnippet
+      ac-source-abbrev
+      ac-source-dictionary
+      ac-source-words-in-same-mode-buffers))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(add-to-list 'auto-mode-alist '("\\.\\(js\\|js.erb\\)\\'" . js2-mode))
+  (defun ac-sgml-mode-setup ()
+    (setq-default ac-sources my-ac-sources))
+  (defun ac-html-mode-setup ()
+    (setq-default ac-sources my-ac-sources))
+  (defun ac-web-mode-setup ()
+    (setq-default ac-sources my-ac-sources))
+  (defun ac-css-mode-setup ()
+    (setq-default ac-sources (append '(ac-source-css-property) my-ac-sources)))
+  (defun ac-scss-mode-setup ()
+    (setq-default ac-sources (append '(ac-source-css-property) my-ac-sources)))
+  (defun ac-js-mode-setup ()
+    (setq-default ac-sources my-ac-sources))
+  (defun ac-js2-mode-setup ()
+    (setq-default ac-sources my-ac-sources))
+  (defun ac-coffee-mode-setup ()
+    (setq-default ac-sources my-ac-sources))
+
+  (add-to-list 'ac-modes 'sgml-mode)
+  (add-hook 'sgml-mode-hook 'ac-sgml-mode-setup)
+  (add-to-list 'ac-modes 'html-mode)
+  (add-hook 'html-mode-hook 'ac-html-mode-setup)
+  (add-to-list 'ac-modes 'web-mode)
+  (add-hook 'web-mode-hook 'ac-web-mode-setup)
+  (add-to-list 'ac-modes 'css-mode)
+  (add-hook 'css-mode-hook 'ac-css-mode-setup)
+  (add-to-list 'ac-modes 'scss-mode)
+  (add-hook 'scss-mode-hook 'ac-scss-mode-setup)
+  (add-to-list 'ac-modes 'js-mode)
+  (add-hook 'js-mode-hook 'ac-js-mode-setup)
+  (add-to-list 'ac-modes 'js2-mode)
+  (add-hook 'js2-mode-hook 'ac-js2-mode-setup)
+  (add-to-list 'ac-modes 'coffee-mode)
+  (add-hook 'coffee-mode-hook 'ac-coffee-mode-setup)
+
+  (setq ac-use-menu-map t)
+  (setf (symbol-function 'yas-active-keys)
+        (lambda ()
+          (remove-duplicates (mapcan #'yas--table-all-keys (yas--get-snippet-tables))))))
+
+;; major/minor-mode
+(when (locate-library "js2-mode")
+  (add-to-list 'auto-mode-alist '("\\.\\(js\\|js.erb\\)\\'" . js2-mode)))
+(when (locate-library "web-mode")
+  (add-to-list 'auto-mode-alist '("\\.\\(ejs\\)\\'" . web-mode)))
+(when (locate-library "emmet-mode")
+  (add-hook 'web-mode-hook 'emmet-mode)
+  (add-hook 'sgml-mode-hook 'emmet-mode)
+  (add-hook 'html-mode-hook 'emmet-mode)
+  (add-hook 'css-mode-hook 'emmet-mode)
+  (add-hook 'scss-mode-hook 'emmet-mode))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (custom-set-variables
@@ -583,9 +653,11 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(css-indent-offset 2)
+ '(emmet-indentation 2)
  '(js2-basic-offset 2)
  '(scss-compile-at-save nil)
- '(standard-indent 2))
+ '(standard-indent 2)
+ '(zencoding-indentation 2))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
